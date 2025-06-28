@@ -1,20 +1,47 @@
 import { useMemo } from 'react';
+import { exportLocalData } from '../utils/api'; // Importar función de exportación
 // No se importa XLSX aquí, ya que no está permitido.
 // En un entorno real, se importaría: import * as XLSX from 'xlsx';
 
 export const TablaDatos = ({ datos, onDelete }) => {
   const handleDownload = () => {
-    // Simulación de descarga de Excel.
-    // En un entorno real, se usaría la librería 'xlsx' para generar el archivo.
-    // Ejemplo de cómo se haría con 'xlsx':
-    /*
-    const ws = XLSX.utils.json_to_sheet(datos);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Datos");
-    XLSX.writeFile(wb, "datos.xlsx");
-    */
-    alert('La funcionalidad de descarga de Excel está simulada. En un entorno real, se generaría un archivo .xlsx compatible.');
-    console.log("Datos a descargar:", datos);
+    // Crear CSV con los datos actuales de la tabla
+    if (datos.length === 0) {
+      alert('No hay datos para descargar');
+      return;
+    }
+
+    const headers = ['Fecha', 'Hora', 'Rojo', 'MDA', 'Isla', 'Tipo', 'Monto', 'Hex Suma', 'Observación'];
+    const csvContent = [
+      headers.join(','),
+      ...datos.map(item => [
+        item.fecha || '',
+        item.hora || '',
+        item.numeroRojo || '',
+        item.mda || '',
+        item.isla || '',
+        item.tipo || '',
+        item.monto || '',
+        item.hexadecimalSum || '',
+        `"${(item.observacion || '').replace(/"/g, '""')}"` // Escapar comillas en observaciones
+      ].join(','))
+    ].join('\n');
+
+    // Descargar archivo CSV
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `transacciones_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+    
+    console.log("✅ Datos descargados como CSV:", datos);
+  };
+
+  const handleExportAll = () => {
+    // Exportar todos los datos guardados localmente
+    exportLocalData();
   };
 
   const formatMonto = (monto) => {
@@ -29,12 +56,20 @@ export const TablaDatos = ({ datos, onDelete }) => {
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
         <h2 className="text-xl font-semibold text-gray-100 mb-2 sm:mb-0">Registros</h2>
         {hasData && (
-          <button
-            onClick={handleDownload}
-            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm sm:text-base"
-          >
-            Descargar Excel
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={handleDownload}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors text-sm sm:text-base"
+            >
+              Descargar CSV
+            </button>
+            <button
+              onClick={handleExportAll}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors text-sm sm:text-base"
+            >
+              Exportar Todo
+            </button>
+          </div>
         )}
       </div>
 

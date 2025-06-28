@@ -10,6 +10,8 @@ Este es un proyecto React para gestión de transacciones, pagos y errores con in
 - ⚠️ Manejo de errores
 - 🎨 Interfaz moderna con Tailwind CSS
 - 📱 Responsive design
+- 💾 Almacenamiento local (funciona sin Google Sheets)
+- 📁 Exportación de datos en CSV
 
 ## Tecnologías
 
@@ -50,3 +52,21 @@ src/
 ├── App.js              # Componente principal
 └── index.js            # Punto de entrada
 ```
+
+## Configuración
+
+### Sin Google Sheets (Modo Local)
+El proyecto funciona perfectamente sin configurar Google Sheets. Los datos se guardan localmente en el navegador y se pueden exportar como archivos CSV.
+
+**Características del modo local:**
+- ✅ Almacenamiento automático en localStorage
+- ✅ Exportación de datos en CSV
+- ✅ Backup automático en caso de errores
+- ✅ Sin necesidad de configuración adicional
+
+### Con Google Sheets (Opcional)
+Si quieres integrar Google Sheets más adelante, solo necesitas:
+
+1. Crear un Google Apps Script
+2. Configurar la variable de entorno: `REACT_APP_GOOGLE_SHEETS_URL`
+3. Los datos se sincronizarán automáticamente
