@@ -2,14 +2,5 @@ services:
   - type: web
     name: proyecto-transacciones
     env: static
-    buildCommand: npm install --legacy-peer-deps && npm run build
+    buildCommand: npm install --legacy-peer-deps --production=false && npm run build
     staticPublishPath: ./build
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: NODE_VERSION
-        value: "18"
-      - key: NPM_CONFIG_PRODUCTION
-        value: "false"
