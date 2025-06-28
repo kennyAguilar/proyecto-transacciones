@@ -8,7 +8,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:render": "npm install --legacy-peer-deps --production=false && react-scripts build"
+    "build:render": "npm install --legacy-peer-deps --production=false && react-scripts build",
+    "install:render": "npm install --legacy-peer-deps --production=false"
   },
   "dependencies": {
     "react": "^18.0.0",
