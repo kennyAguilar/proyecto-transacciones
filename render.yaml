@@ -2,7 +2,7 @@ services:
   - type: web
     name: proyecto-transacciones
     env: static
-    buildCommand: npm run install:render && npm run build
+    buildCommand: npm run build:render
     staticPublishPath: ./build
     routes:
       - type: rewrite
