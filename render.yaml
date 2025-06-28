@@ -4,3 +4,7 @@ services:
     env: static
     buildCommand: npm install --legacy-peer-deps --production=false && npm run build
     staticPublishPath: ./build
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
